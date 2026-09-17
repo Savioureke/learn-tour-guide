@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans text-secondary bg-[#FFFEFE];
+  }
+
+  h1, h2, h3, .font-cursive {
+    font-family: 'Volkhov', serif;
+  }
+}
+
+@layer utilities {
+  .shadow-hover {
+    transition: all 0.3s ease-in-out;
+  }
+  .shadow-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.12);
+  }
+
+  .primary-btn-shadow {
+    box-shadow: 0px 20px 35px rgba(241, 165, 1, 0.25);
+  }
+
+  .danger-btn-shadow {
+    box-shadow: 0px 15px 30px rgba(223, 105, 81, 0.3);
+  }
+
+  .orange-gradient-btn {
+    background: linear-gradient(180deg, #FF946D 0%, #FF7D68 100%);
+    box-shadow: 0px 20px 35px rgba(223, 105, 81, 0.25);
+  }
+}
