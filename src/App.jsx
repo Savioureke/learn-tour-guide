@@ -1,28 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Curriculum from './components/Curriculum';
-import Mentors from './components/Mentors';
-import EnrollmentSteps from './components/EnrollmentSteps';
-import Testimonials from './components/Testimonials';
-import Partners from './components/Partners';
-import Newsletter from './components/Newsletter';
 import Footer from './components/Footer';
 import AuthModal from './components/AuthModal';
-import VideoModal from './components/VideoModal';
 import StudentDashboard from './components/StudentDashboard';
+
+// Dedicated Pages
+import HomePage from './pages/HomePage';
+import CurriculumPage from './pages/CurriculumPage';
+import InstructorsPage from './pages/InstructorsPage';
+import HowToEnrollPage from './pages/HowToEnrollPage';
+import SuccessStoriesPage from './pages/SuccessStoriesPage';
+
 import { fetchTourGuides, updateStudentMentor } from './lib/supabase';
 
 const SESSION_KEY = 'tourguide_student_session';
 
+const PAGE_ROUTES = {
+  home: '/',
+  curriculum: '/curriculum',
+  instructors: '/instructors',
+  'how-to-enroll': '/how-to-enroll',
+  testimonials: '/success-stories'
+};
+
+const PAGE_TITLES = {
+  home: 'Learn Tour Guide | Professional Tour Guide Certification & Academy',
+  curriculum: 'Curriculum | Learn Tour Guide Academy',
+  instructors: 'Instructors & Mentors | Learn Tour Guide Academy',
+  'how-to-enroll': 'How to Enroll | Learn Tour Guide Academy',
+  testimonials: 'Success Stories | Learn Tour Guide Academy'
+};
+
+function getInitialPage() {
+  if (typeof window === 'undefined') return 'home';
+  const path = window.location.pathname.toLowerCase().replace(/\/$/, '') || '/';
+  const hash = window.location.hash.toLowerCase().replace('#', '');
+
+  if (path === '/curriculum' || hash === 'curriculum') return 'curriculum';
+  if (path === '/instructors' || hash === 'instructors' || hash === 'mentors') return 'instructors';
+  if (path === '/how-to-enroll' || hash === 'how-to-enroll' || hash === 'how-to-start') return 'how-to-enroll';
+  if (path === '/success-stories' || path === '/testimonials' || hash === 'testimonials') return 'testimonials';
+  
+  return 'home';
+}
+
 export default function App() {
+  const [currentPage, setCurrentPage] = useState(getInitialPage());
   const [mentors, setMentors] = useState([]);
   const [loadingMentors, setLoadingMentors] = useState(true);
-  const [isVideoOpen, setIsVideoOpen] = useState(false);
   
   // Auth & Student State
   const [currentStudent, setCurrentStudent] = useState(null);
-  const [viewMode, setViewMode] = useState('home'); // 'home' | 'dashboard'
+  const [viewMode, setViewMode] = useState('main'); // 'main' | 'dashboard'
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalMode, setAuthModalMode] = useState('signup'); // 'signup' | 'login'
   const [preselectedMentor, setPreselectedMentor] = useState(null);
@@ -40,7 +69,23 @@ export default function App() {
     }
   }, []);
 
-  // Fetch active tour guides from the Supabase backend
+  // Handle browser Back & Forward navigation
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPage(getInitialPage());
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Update document title when page changes
+  useEffect(() => {
+    document.title = PAGE_TITLES[currentPage] || PAGE_TITLES.home;
+  }, [currentPage]);
+
+  // Fetch active tour guides from Supabase backend
   useEffect(() => {
     async function loadGuides() {
       try {
@@ -55,6 +100,18 @@ export default function App() {
     }
     loadGuides();
   }, []);
+
+  const handleNavigate = (pageId) => {
+    setCurrentPage(pageId);
+    setViewMode('main');
+    const targetUrl = PAGE_ROUTES[pageId] || '/';
+    try {
+      window.history.pushState({ page: pageId }, '', targetUrl);
+    } catch (e) {
+      console.warn('History pushState error:', e);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleOpenSignUp = (mentor = null) => {
     setPreselectedMentor(mentor);
@@ -75,6 +132,7 @@ export default function App() {
       console.warn('Failed to save session:', e);
     }
     setViewMode('dashboard');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleLogout = () => {
@@ -84,7 +142,7 @@ export default function App() {
     } catch (e) {
       console.warn('Failed to remove session:', e);
     }
-    setViewMode('home');
+    setViewMode('main');
   };
 
   const handleUpdateStudent = (updatedStudent) => {
@@ -121,64 +179,95 @@ export default function App() {
       <StudentDashboard
         student={currentStudent}
         onLogout={handleLogout}
-        onBackToHome={() => setViewMode('home')}
+        onBackToHome={() => {
+          setViewMode('main');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
         onUpdateStudent={handleUpdateStudent}
       />
     );
   }
 
-  // Otherwise show main marketing website
+  // Render current dedicated page
+  const renderCurrentPage = () => {
+    switch (currentPage) {
+      case 'curriculum':
+        return (
+          <CurriculumPage
+            onOpenEnroll={handleOpenSignUp}
+            onNavigate={handleNavigate}
+            currentStudent={currentStudent}
+            onGoToDashboard={() => setViewMode('dashboard')}
+          />
+        );
+      case 'instructors':
+        return (
+          <InstructorsPage
+            mentors={mentors}
+            loadingMentors={loadingMentors}
+            onSelectMentor={handleSelectMentorFromWebsite}
+            onOpenEnroll={handleOpenSignUp}
+            onNavigate={handleNavigate}
+            currentStudent={currentStudent}
+            onGoToDashboard={() => setViewMode('dashboard')}
+          />
+        );
+      case 'how-to-enroll':
+        return (
+          <HowToEnrollPage
+            onOpenEnroll={handleOpenSignUp}
+            onNavigate={handleNavigate}
+            currentStudent={currentStudent}
+            onGoToDashboard={() => setViewMode('dashboard')}
+          />
+        );
+      case 'testimonials':
+        return (
+          <SuccessStoriesPage
+            onOpenEnroll={handleOpenSignUp}
+            onNavigate={handleNavigate}
+            currentStudent={currentStudent}
+            onGoToDashboard={() => setViewMode('dashboard')}
+          />
+        );
+      case 'home':
+      default:
+        return (
+          <HomePage
+            onNavigate={handleNavigate}
+            onOpenEnroll={handleOpenSignUp}
+            currentStudent={currentStudent}
+            onGoToDashboard={() => setViewMode('dashboard')}
+          />
+        );
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#FFFEFE] text-secondary selection:bg-primary selection:text-white" id="top">
       {/* Navigation */}
       <Navbar
+        currentPage={currentPage}
+        onNavigate={handleNavigate}
         onOpenSignUp={() => handleOpenSignUp(null)}
         onOpenLogin={handleOpenLogin}
-        onOpenVideo={() => setIsVideoOpen(true)}
         currentStudent={currentStudent}
         onGoToDashboard={() => setViewMode('dashboard')}
         onLogout={handleLogout}
       />
 
-      {/* Main Content */}
+      {/* Main Content Area */}
       <main>
-        {/* Hero Section */}
-        <Hero
-          onOpenEnroll={() => (currentStudent ? setViewMode('dashboard') : handleOpenSignUp(null))}
-          onOpenVideo={() => setIsVideoOpen(true)}
-        />
-
-        {/* Curriculum / Modules */}
-        <Curriculum />
-
-        {/* Live Mentors from Supabase */}
-        <Mentors
-          mentors={mentors}
-          loading={loadingMentors}
-          onSelectMentor={handleSelectMentorFromWebsite}
-        />
-
-        {/* 3 Step Pathway & Live Status Card */}
-        <EnrollmentSteps
-          onOpenEnroll={() => (currentStudent ? setViewMode('dashboard') : handleOpenSignUp(null))}
-        />
-
-        {/* Testimonials */}
-        <Testimonials />
-
-        {/* Global Tourism Affiliates */}
-        <Partners />
-
-        {/* Newsletter CTA */}
-        <Newsletter />
+        {renderCurrentPage()}
       </main>
 
       {/* Footer */}
       <Footer
         onOpenEnroll={() => (currentStudent ? setViewMode('dashboard') : handleOpenSignUp(null))}
+        onNavigate={handleNavigate}
       />
 
-      {/* Modals */}
+      {/* Auth & Enrollment Modal */}
       <AuthModal
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
@@ -186,11 +275,6 @@ export default function App() {
         mentors={mentors}
         preselectedMentor={preselectedMentor}
         onAuthSuccess={handleAuthSuccess}
-      />
-
-      <VideoModal
-        isOpen={isVideoOpen}
-        onClose={() => setIsVideoOpen(false)}
       />
     </div>
   );

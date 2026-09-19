@@ -11,7 +11,7 @@ const curriculumModules = [
     icon: '/assets/img/category/icon2.png',
     title: 'Group Dynamics & Safety',
     description: 'Master crowd psychology, smooth pacing, emergency response, and seamless multi-stop itinerary management.',
-    highlight: true // The distinctive accented card in the Jadoo theme
+    highlight: true // Distinctive accented card in the Learn Tour Guide theme
   },
   {
     icon: '/assets/img/category/icon3.png',

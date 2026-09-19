@@ -1,6 +1,14 @@
 import React from 'react';
+import BrandLogo from './BrandLogo';
 
-export default function Footer({ onOpenEnroll }) {
+export default function Footer({ onOpenEnroll, onNavigate }) {
+  const handleNavClick = (e, pageId) => {
+    e.preventDefault();
+    if (onNavigate) {
+      onNavigate(pageId);
+    }
+  };
+
   return (
     <footer className="pt-16 pb-8 bg-white border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -8,40 +16,105 @@ export default function Footer({ onOpenEnroll }) {
           
           {/* Brand Column */}
           <div className="lg:col-span-4">
-            <div className="flex items-center gap-2 mb-4">
-              <img src="/assets/img/logo2.svg" width="140" alt="TourGuide Academy" />
-              <span className="text-[11px] font-bold tracking-wider uppercase px-2 py-0.5 rounded bg-primary/15 text-primary">
-                Academy
-              </span>
-            </div>
+            <button
+              type="button"
+              onClick={(e) => handleNavClick(e, 'home')}
+              className="text-left mb-4 focus:outline-none"
+            >
+              <BrandLogo />
+            </button>
             <p className="text-secondary text-sm leading-relaxed max-w-sm font-medium">
               Empowering the next generation of world-class tour guides, storytellers, and travel entrepreneurs across the globe.
             </p>
           </div>
 
-          {/* Nav Column 1: Curriculum */}
+          {/* Nav Column 1: Academy Pages */}
           <div className="lg:col-span-2">
             <h4 className="text-dark font-bold text-base mb-4">Academy</h4>
             <ul className="space-y-2.5 text-sm text-secondary font-medium">
-              <li><a href="#curriculum" className="hover:text-dark transition-colors">Curriculum</a></li>
-              <li><a href="#mentors" className="hover:text-dark transition-colors">Master Mentors</a></li>
-              <li><a href="#how-to-start" className="hover:text-dark transition-colors">How to Enroll</a></li>
-              <li><a href="#testimonials" className="hover:text-dark transition-colors">Success Stories</a></li>
+              <li>
+                <button
+                  type="button"
+                  onClick={(e) => handleNavClick(e, 'curriculum')}
+                  className="hover:text-dark transition-colors text-left"
+                >
+                  Curriculum
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={(e) => handleNavClick(e, 'instructors')}
+                  className="hover:text-dark transition-colors text-left"
+                >
+                  Master Mentors
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={(e) => handleNavClick(e, 'how-to-enroll')}
+                  className="hover:text-dark transition-colors text-left"
+                >
+                  How to Enroll
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={(e) => handleNavClick(e, 'testimonials')}
+                  className="hover:text-dark transition-colors text-left"
+                >
+                  Success Stories
+                </button>
+              </li>
             </ul>
           </div>
 
-          {/* Nav Column 2: Resources */}
+          {/* Nav Column 2: Resources & Certification */}
           <div className="lg:col-span-2">
             <h4 className="text-dark font-bold text-base mb-4">Certification</h4>
             <ul className="space-y-2.5 text-sm text-secondary font-medium">
-              <li><a href="#!" onClick={(e) => { e.preventDefault(); onOpenEnroll(); }} className="hover:text-dark transition-colors">Student Portal</a></li>
-              <li><a href="#!" className="hover:text-dark transition-colors">License Standards</a></li>
-              <li><a href="#!" className="hover:text-dark transition-colors">VIP Field Drills</a></li>
-              <li><a href="#!" className="hover:text-dark transition-colors">Tour Rates Guide</a></li>
+              <li>
+                <button
+                  type="button"
+                  onClick={(e) => { e.preventDefault(); onOpenEnroll(); }}
+                  className="hover:text-dark transition-colors text-left text-primary font-semibold"
+                >
+                  Student Portal &amp; Login
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={(e) => handleNavClick(e, 'curriculum')}
+                  className="hover:text-dark transition-colors text-left"
+                >
+                  License Standards
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={(e) => handleNavClick(e, 'instructors')}
+                  className="hover:text-dark transition-colors text-left"
+                >
+                  VIP Field Drills
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={(e) => handleNavClick(e, 'curriculum')}
+                  className="hover:text-dark transition-colors text-left"
+                >
+                  Tour Rates Guide
+                </button>
+              </li>
             </ul>
           </div>
 
-          {/* Nav Column 3: Contact & Admin Sync */}
+          {/* Nav Column 3: Contact & Social */}
           <div className="lg:col-span-4">
             <div className="flex items-center gap-3 mb-4">
               <a 
@@ -79,7 +152,7 @@ export default function Footer({ onOpenEnroll }) {
 
         {/* Copyright */}
         <div className="pt-8 text-center text-xs text-secondary font-medium flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>All rights reserved &copy; {new Date().getFullYear()} TourGuide Academy &middot; Connected with Central Supabase Tour Network</span>
+          <span>All rights reserved &copy; {new Date().getFullYear()} Learn Tour Guide Academy &middot; Connected with Central Supabase Tour Network</span>
           <span className="text-gray-400">Ready for Vercel &amp; GitHub Deployment</span>
         </div>
       </div>

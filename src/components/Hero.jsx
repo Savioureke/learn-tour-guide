@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Hero({ onOpenEnroll, onOpenVideo }) {
+export default function Hero({ onOpenEnroll, onNavigate }) {
   return (
     <section className="relative pt-28 sm:pt-36 pb-16 overflow-hidden">
       {/* Background Graphic */}
@@ -18,7 +18,7 @@ export default function Hero({ onOpenEnroll, onOpenVideo }) {
             </h4>
             
             <h1 className="font-cursive text-dark text-3xl sm:text-5xl lg:text-[62px] font-bold leading-[1.15] mb-6">
-              Master the Art of Tour Guiding & Inspire Global Travelers
+              Master the Art of Tour Guiding &amp; Inspire Global Travelers
             </h1>
             
             <p className="text-secondary font-medium text-base sm:text-lg leading-relaxed mb-8 max-w-xl mx-auto md:mx-0">
@@ -31,20 +31,18 @@ export default function Hero({ onOpenEnroll, onOpenVideo }) {
               <button
                 type="button"
                 onClick={() => onOpenEnroll()}
-                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-primary text-white font-medium text-base shadow-primary-btn hover:bg-primary-hover transition-all transform hover:-translate-y-0.5"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-primary text-white font-semibold text-base shadow-primary-btn hover:bg-primary-hover transition-all transform hover:-translate-y-0.5"
               >
                 Enroll in Academy
               </button>
 
               <button
                 type="button"
-                onClick={onOpenVideo}
-                className="group flex items-center gap-3 text-secondary hover:text-dark transition-colors py-2"
+                onClick={() => onNavigate ? onNavigate('curriculum') : null}
+                className="group flex items-center justify-center gap-2 px-6 py-4 rounded-xl border border-gray-300 text-dark hover:border-dark hover:bg-dark hover:text-white transition-all font-semibold text-sm w-full sm:w-auto shadow-sm"
               >
-                <span className="w-12 h-12 rounded-full bg-danger text-white flex items-center justify-center danger-btn-shadow group-hover:scale-105 transition-transform">
-                  <img src="/assets/img/hero/play.svg" width="14" alt="Play Intro Video" />
-                </span>
-                <span className="font-medium text-[15px]">Watch Intro Video</span>
+                <span>Explore Curriculum</span>
+                <span className="text-primary group-hover:text-white group-hover:translate-x-1 transition-all">→</span>
               </button>
             </div>
           </div>

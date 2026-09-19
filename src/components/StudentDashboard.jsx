@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import BrandLogo from './BrandLogo';
 import { TOUR_GUIDE_TUTORIALS } from '../data/tutorials';
 import { updateCompletedTutorials, updateStudentMentor, fetchTourGuides } from '../lib/supabase';
 
@@ -87,13 +88,10 @@ export default function StudentDashboard({ student, onLogout, onBackToHome, onUp
           <div className="flex items-center gap-4">
             <button
               onClick={onBackToHome}
-              className="flex items-center gap-2 group text-left"
+              className="flex items-center gap-2 group text-left focus:outline-none"
               title="Return to main website"
             >
-              <img src="/assets/img/logo.svg" height="32" alt="TourGuide Academy" className="h-8" />
-              <span className="text-[11px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-primary/15 text-primary">
-                Student Portal
-              </span>
+              <BrandLogo badge="Student Portal" />
             </button>
           </div>
 
