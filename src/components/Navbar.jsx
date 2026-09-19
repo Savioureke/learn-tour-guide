@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import BrandLogo from './BrandLogo';
-import { Compass, GraduationCap } from 'lucide-react';
+import { Compass } from 'lucide-react';
 
 const NAV_HREFS = {
   home: '/',
   'find-guides': '/find-guides',
   instructors: '/top-guides',
   'how-to-enroll': '/how-to-book',
-  testimonials: '/traveler-reviews',
-  'trainee-portal': '/guide-academy'
+  testimonials: '/traveler-reviews'
 };
 
 export default function Navbar({
@@ -105,22 +104,6 @@ export default function Navbar({
 
         {/* Action Controls */}
         <div className="hidden lg:flex items-center space-x-3">
-          
-          {/* Guide Academy / Trainee Link */}
-          <button
-            type="button"
-            onClick={(e) => handleNavClick(e, 'trainee-portal')}
-            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
-              currentPage === 'trainee-portal'
-                ? 'bg-dark text-white shadow-md'
-                : 'bg-primary/10 text-dark hover:bg-primary/20'
-            }`}
-            title="Access the 10-Module Guide Training Academy"
-          >
-            <GraduationCap className="w-4 h-4 text-primary" />
-            <span>Become a Guide (Academy)</span>
-          </button>
-
           {currentStudent ? (
             <div className="flex items-center gap-3">
               <button
@@ -128,7 +111,7 @@ export default function Navbar({
                 className="flex items-center gap-2 px-4 py-2 rounded-xl bg-dark text-white text-xs font-semibold hover:bg-primary transition-all shadow-sm"
               >
                 <span className="w-2 h-2 rounded-full bg-success animate-pulse"></span>
-                <span>My Portal ({currentStudent.name.split(' ')[0]})</span>
+                <span>My Bookings ({currentStudent.name.split(' ')[0]})</span>
               </button>
               <button
                 onClick={onLogout}
@@ -206,15 +189,6 @@ export default function Navbar({
               </a>
             );
           })}
-
-          <button
-            type="button"
-            onClick={(e) => handleNavClick(e, 'trainee-portal')}
-            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-primary/10 text-dark font-bold text-xs"
-          >
-            <GraduationCap className="w-4 h-4 text-primary" />
-            <span>Become a Guide (Academy)</span>
-          </button>
 
           <div className="pt-3 border-t border-gray-100 flex flex-col gap-2">
             {currentStudent ? (

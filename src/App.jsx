@@ -10,7 +10,6 @@ import HomePage from './pages/HomePage';
 import FindGuidesPage from './pages/FindGuidesPage';
 import HowToEnrollPage from './pages/HowToEnrollPage';
 import SuccessStoriesPage from './pages/SuccessStoriesPage';
-import TraineePortalPage from './pages/TraineePortalPage';
 
 import { fetchTourGuides, updateStudentMentor } from './lib/supabase';
 
@@ -21,8 +20,7 @@ const PAGE_ROUTES = {
   'find-guides': '/find-guides',
   instructors: '/top-guides',
   'how-to-enroll': '/how-to-book',
-  testimonials: '/traveler-reviews',
-  'trainee-portal': '/guide-academy'
+  testimonials: '/traveler-reviews'
 };
 
 const PAGE_TITLES = {
@@ -30,8 +28,7 @@ const PAGE_TITLES = {
   'find-guides': 'Find Tour Guides | Booking Marketplace',
   instructors: 'Top Rated Tour Guides | Booking Marketplace',
   'how-to-enroll': 'How to Book a Guide | Booking Marketplace',
-  testimonials: 'Traveler Reviews & Experiences | Booking Marketplace',
-  'trainee-portal': 'Trainee Tour Guide Academy (10 Modules) | Booking'
+  testimonials: 'Traveler Reviews & Experiences | Booking Marketplace'
 };
 
 function getInitialPage() {
@@ -43,7 +40,6 @@ function getInitialPage() {
   if (path === '/top-guides' || path === '/instructors' || hash === 'instructors' || hash === 'mentors') return 'instructors';
   if (path === '/how-to-book' || path === '/how-to-enroll' || hash === 'how-to-enroll' || hash === 'how-to-start') return 'how-to-enroll';
   if (path === '/traveler-reviews' || path === '/success-stories' || path === '/testimonials' || hash === 'testimonials') return 'testimonials';
-  if (path === '/guide-academy' || path === '/trainee-portal' || hash === 'trainee-portal' || hash === 'academy') return 'trainee-portal';
   
   return 'home';
 }
@@ -203,14 +199,6 @@ export default function App() {
         return (
           <SuccessStoriesPage
             onNavigate={handleNavigate}
-          />
-        );
-      case 'trainee-portal':
-        return (
-          <TraineePortalPage
-            currentStudent={currentStudent}
-            onNavigate={handleNavigate}
-            onOpenSignUp={handleOpenSignUp}
           />
         );
       case 'home':

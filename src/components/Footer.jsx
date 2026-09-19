@@ -71,45 +71,21 @@ export default function Footer({ onOpenEnroll, onNavigate }) {
             </ul>
           </div>
 
-          {/* Nav Column 2: Guide Path & Trainee */}
+          {/* Nav Column 2: Traveler Assurance */}
           <div className="lg:col-span-2">
-            <h4 className="text-dark font-bold text-base mb-4">Tour Guides</h4>
+            <h4 className="text-dark font-bold text-base mb-4">Traveler Trust</h4>
             <ul className="space-y-2.5 text-sm text-secondary font-medium">
-              <li>
-                <button
-                  type="button"
-                  onClick={(e) => handleNavClick(e, 'trainee-portal')}
-                  className="hover:text-dark transition-colors text-left text-primary font-bold"
-                >
-                  Become a Guide (Academy)
-                </button>
+              <li className="flex items-center gap-1.5 text-dark">
+                <span>✓ Verified Local Guides</span>
               </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={(e) => handleNavClick(e, 'trainee-portal')}
-                  className="hover:text-dark transition-colors text-left"
-                >
-                  10-Module Training
-                </button>
+              <li className="flex items-center gap-1.5 text-dark">
+                <span>✓ Free 20-Min Discovery</span>
               </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={(e) => handleNavClick(e, 'trainee-portal')}
-                  className="hover:text-dark transition-colors text-left"
-                >
-                  Listing Verification ($10)
-                </button>
+              <li className="flex items-center gap-1.5 text-dark">
+                <span>✓ Fixed Transparent Rates</span>
               </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={(e) => handleNavClick(e, 'trainee-portal')}
-                  className="hover:text-dark transition-colors text-left"
-                >
-                  Certificate of Completion
-                </button>
+              <li className="flex items-center gap-1.5 text-dark">
+                <span>✓ Pay Online or In Person</span>
               </li>
             </ul>
           </div>
