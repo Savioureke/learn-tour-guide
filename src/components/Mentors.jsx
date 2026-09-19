@@ -36,9 +36,16 @@ export default function Mentors({ mentors, loading, onSelectMentor }) {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {mentors.map((mentor, index) => {
+              const fallbackAvatars = [
+                '/assets/img/instructors/sophia.jpg',
+                '/assets/img/instructors/mateo.jpg',
+                '/assets/img/instructors/carlos.jpg',
+                '/assets/img/instructors/kenji.jpg'
+              ];
+              const defaultAvatar = fallbackAvatars[index % fallbackAvatars.length];
               const imageSrc = mentor.picture 
                 ? (mentor.picture.startsWith('http') || mentor.picture.startsWith('/') ? mentor.picture : `/${mentor.picture}`)
-                : `/assets/img/dest/dest${(index % 3) + 1}.jpg`;
+                : defaultAvatar;
 
               return (
                 <div
@@ -53,7 +60,7 @@ export default function Mentors({ mentors, loading, onSelectMentor }) {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = `/assets/img/dest/dest${(index % 3) + 1}.jpg`;
+                        e.target.src = defaultAvatar;
                       }}
                     />
                     <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-dark shadow-sm">
