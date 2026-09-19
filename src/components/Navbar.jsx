@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import BrandLogo from './BrandLogo';
+import { Compass, GraduationCap } from 'lucide-react';
 
 const NAV_HREFS = {
   home: '/',
-  curriculum: '/curriculum',
-  instructors: '/instructors',
-  'how-to-enroll': '/how-to-enroll',
-  testimonials: '/success-stories'
+  'find-guides': '/find-guides',
+  instructors: '/top-guides',
+  'how-to-enroll': '/how-to-book',
+  testimonials: '/traveler-reviews',
+  'trainee-portal': '/guide-academy'
 };
 
 export default function Navbar({
@@ -30,10 +32,10 @@ export default function Navbar({
   }, []);
 
   const navItems = [
-    { id: 'curriculum', label: 'Curriculum' },
-    { id: 'instructors', label: 'Instructors' },
-    { id: 'how-to-enroll', label: 'How to Enroll' },
-    { id: 'testimonials', label: 'Success Stories' }
+    { id: 'find-guides', label: 'Find Guides' },
+    { id: 'instructors', label: 'Featured Guides' },
+    { id: 'how-to-enroll', label: 'How to Book' },
+    { id: 'testimonials', label: 'Traveler Reviews' }
   ];
 
   const handleNavClick = (e, pageId) => {
@@ -55,14 +57,14 @@ export default function Navbar({
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        {/* Brand Logo -> Learn Tour Guide */}
+        {/* Brand Logo -> Booking */}
         <a
           href="/"
           onClick={(e) => handleNavClick(e, 'home')}
           className="text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xl cursor-pointer"
-          title="Learn Tour Guide - Return to Home"
+          title="Booking - Return to Home"
         >
-          <BrandLogo />
+          <BrandLogo badge="Tour Guides" />
         </a>
 
         {/* Desktop Navigation Links */}
@@ -101,8 +103,24 @@ export default function Navbar({
           })}
         </div>
 
-        {/* Auth / Student Actions */}
-        <div className="hidden lg:flex items-center space-x-4">
+        {/* Action Controls */}
+        <div className="hidden lg:flex items-center space-x-3">
+          
+          {/* Guide Academy / Trainee Link */}
+          <button
+            type="button"
+            onClick={(e) => handleNavClick(e, 'trainee-portal')}
+            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+              currentPage === 'trainee-portal'
+                ? 'bg-dark text-white shadow-md'
+                : 'bg-primary/10 text-dark hover:bg-primary/20'
+            }`}
+            title="Access the 10-Module Guide Training Academy"
+          >
+            <GraduationCap className="w-4 h-4 text-primary" />
+            <span>Become a Guide (Academy)</span>
+          </button>
+
           {currentStudent ? (
             <div className="flex items-center gap-3">
               <button
@@ -110,11 +128,11 @@ export default function Navbar({
                 className="flex items-center gap-2 px-4 py-2 rounded-xl bg-dark text-white text-xs font-semibold hover:bg-primary transition-all shadow-sm"
               >
                 <span className="w-2 h-2 rounded-full bg-success animate-pulse"></span>
-                <span>My Dashboard ({currentStudent.name.split(' ')[0]})</span>
+                <span>My Portal ({currentStudent.name.split(' ')[0]})</span>
               </button>
               <button
                 onClick={onLogout}
-                className="text-xs font-medium text-danger hover:underline px-2"
+                className="text-xs font-medium text-danger hover:underline px-1"
               >
                 Logout
               </button>
@@ -131,7 +149,7 @@ export default function Navbar({
               <button
                 type="button"
                 onClick={() => onOpenSignUp()}
-                className="px-6 py-2.5 rounded-xl border border-dark text-dark font-semibold hover:bg-dark hover:text-white transition-all text-sm shadow-sm"
+                className="px-5 py-2.5 rounded-xl border border-dark text-dark font-semibold hover:bg-dark hover:text-white transition-all text-xs shadow-sm"
               >
                 Sign Up
               </button>
@@ -143,7 +161,7 @@ export default function Navbar({
           </div>
         </div>
 
-        {/* Mobile menu button */}
+        {/* Mobile menu toggle */}
         <button
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -189,6 +207,15 @@ export default function Navbar({
             );
           })}
 
+          <button
+            type="button"
+            onClick={(e) => handleNavClick(e, 'trainee-portal')}
+            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-primary/10 text-dark font-bold text-xs"
+          >
+            <GraduationCap className="w-4 h-4 text-primary" />
+            <span>Become a Guide (Academy)</span>
+          </button>
+
           <div className="pt-3 border-t border-gray-100 flex flex-col gap-2">
             {currentStudent ? (
               <>
@@ -199,7 +226,7 @@ export default function Navbar({
                   }}
                   className="w-full py-3 text-center rounded-xl bg-dark text-white font-medium text-sm"
                 >
-                  Go to Student Dashboard ({currentStudent.name})
+                  My Dashboard ({currentStudent.name})
                 </button>
                 <button
                   onClick={() => {
@@ -229,7 +256,7 @@ export default function Navbar({
                   }}
                   className="w-full py-3 text-center rounded-xl bg-primary text-white font-medium hover:bg-primary-hover shadow-primary-btn text-sm"
                 >
-                  Sign Up &amp; Enroll
+                  Sign Up
                 </button>
               </>
             )}

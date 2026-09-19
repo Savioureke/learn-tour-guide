@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AuthModal from './components/AuthModal';
+import BookingModal from './components/BookingModal';
 import StudentDashboard from './components/StudentDashboard';
 
-// Dedicated Pages
+// Marketplace & Academy Pages
 import HomePage from './pages/HomePage';
-import CurriculumPage from './pages/CurriculumPage';
-import InstructorsPage from './pages/InstructorsPage';
+import FindGuidesPage from './pages/FindGuidesPage';
 import HowToEnrollPage from './pages/HowToEnrollPage';
 import SuccessStoriesPage from './pages/SuccessStoriesPage';
+import TraineePortalPage from './pages/TraineePortalPage';
 
 import { fetchTourGuides, updateStudentMentor } from './lib/supabase';
 
@@ -17,18 +18,20 @@ const SESSION_KEY = 'tourguide_student_session';
 
 const PAGE_ROUTES = {
   home: '/',
-  curriculum: '/curriculum',
-  instructors: '/instructors',
-  'how-to-enroll': '/how-to-enroll',
-  testimonials: '/success-stories'
+  'find-guides': '/find-guides',
+  instructors: '/top-guides',
+  'how-to-enroll': '/how-to-book',
+  testimonials: '/traveler-reviews',
+  'trainee-portal': '/guide-academy'
 };
 
 const PAGE_TITLES = {
-  home: 'Learn Tour Guide | Professional Tour Guide Certification & Academy',
-  curriculum: 'Curriculum | Learn Tour Guide Academy',
-  instructors: 'Instructors & Mentors | Learn Tour Guide Academy',
-  'how-to-enroll': 'How to Enroll | Learn Tour Guide Academy',
-  testimonials: 'Success Stories | Learn Tour Guide Academy'
+  home: 'Booking | Certified Local Tour Guides & Bespoke Excursions',
+  'find-guides': 'Find Tour Guides | Booking Marketplace',
+  instructors: 'Top Rated Tour Guides | Booking Marketplace',
+  'how-to-enroll': 'How to Book a Guide | Booking Marketplace',
+  testimonials: 'Traveler Reviews & Experiences | Booking Marketplace',
+  'trainee-portal': 'Trainee Tour Guide Academy (10 Modules) | Booking'
 };
 
 function getInitialPage() {
@@ -36,10 +39,11 @@ function getInitialPage() {
   const path = window.location.pathname.toLowerCase().replace(/\/$/, '') || '/';
   const hash = window.location.hash.toLowerCase().replace('#', '');
 
-  if (path === '/curriculum' || hash === 'curriculum') return 'curriculum';
-  if (path === '/instructors' || hash === 'instructors' || hash === 'mentors') return 'instructors';
-  if (path === '/how-to-enroll' || hash === 'how-to-enroll' || hash === 'how-to-start') return 'how-to-enroll';
-  if (path === '/success-stories' || path === '/testimonials' || hash === 'testimonials') return 'testimonials';
+  if (path === '/find-guides' || path === '/curriculum' || hash === 'find-guides' || hash === 'curriculum') return 'find-guides';
+  if (path === '/top-guides' || path === '/instructors' || hash === 'instructors' || hash === 'mentors') return 'instructors';
+  if (path === '/how-to-book' || path === '/how-to-enroll' || hash === 'how-to-enroll' || hash === 'how-to-start') return 'how-to-enroll';
+  if (path === '/traveler-reviews' || path === '/success-stories' || path === '/testimonials' || hash === 'testimonials') return 'testimonials';
+  if (path === '/guide-academy' || path === '/trainee-portal' || hash === 'trainee-portal' || hash === 'academy') return 'trainee-portal';
   
   return 'home';
 }
@@ -55,6 +59,10 @@ export default function App() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalMode, setAuthModalMode] = useState('signup'); // 'signup' | 'login'
   const [preselectedMentor, setPreselectedMentor] = useState(null);
+
+  // Booking Modal State
+  const [bookingModalOpen, setBookingModalOpen] = useState(false);
+  const [selectedGuideForBooking, setSelectedGuideForBooking] = useState(null);
 
   // Restore saved student session on launch
   useEffect(() => {
@@ -113,6 +121,11 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleOpenBooking = (guide) => {
+    setSelectedGuideForBooking(guide);
+    setBookingModalOpen(true);
+  };
+
   const handleOpenSignUp = (mentor = null) => {
     setPreselectedMentor(mentor);
     setAuthModalMode('signup');
@@ -154,25 +167,6 @@ export default function App() {
     }
   };
 
-  const handleSelectMentorFromWebsite = async (mentor) => {
-    if (currentStudent) {
-      try {
-        const updated = await updateStudentMentor(currentStudent.id, {
-          guide_id: mentor.id,
-          guide_name: mentor.name,
-          guide_rate: mentor.rate || '$45/hr'
-        });
-        handleUpdateStudent(updated);
-        setViewMode('dashboard');
-      } catch (err) {
-        console.error('Failed to assign mentor:', err);
-        setViewMode('dashboard');
-      }
-    } else {
-      handleOpenSignUp(mentor);
-    }
-  };
-
   // If in dashboard view and student is logged in, show student dashboard
   if (viewMode === 'dashboard' && currentStudent) {
     return (
@@ -191,53 +185,42 @@ export default function App() {
   // Render current dedicated page
   const renderCurrentPage = () => {
     switch (currentPage) {
-      case 'curriculum':
-        return (
-          <CurriculumPage
-            onOpenEnroll={handleOpenSignUp}
-            onNavigate={handleNavigate}
-            currentStudent={currentStudent}
-            onGoToDashboard={() => setViewMode('dashboard')}
-          />
-        );
+      case 'find-guides':
       case 'instructors':
         return (
-          <InstructorsPage
+          <FindGuidesPage
             mentors={mentors}
-            loadingMentors={loadingMentors}
-            onSelectMentor={handleSelectMentorFromWebsite}
-            onOpenEnroll={handleOpenSignUp}
-            onNavigate={handleNavigate}
-            currentStudent={currentStudent}
-            onGoToDashboard={() => setViewMode('dashboard')}
+            onBookGuide={handleOpenBooking}
           />
         );
       case 'how-to-enroll':
         return (
           <HowToEnrollPage
-            onOpenEnroll={handleOpenSignUp}
             onNavigate={handleNavigate}
-            currentStudent={currentStudent}
-            onGoToDashboard={() => setViewMode('dashboard')}
           />
         );
       case 'testimonials':
         return (
           <SuccessStoriesPage
-            onOpenEnroll={handleOpenSignUp}
             onNavigate={handleNavigate}
+          />
+        );
+      case 'trainee-portal':
+        return (
+          <TraineePortalPage
             currentStudent={currentStudent}
-            onGoToDashboard={() => setViewMode('dashboard')}
+            onNavigate={handleNavigate}
+            onOpenSignUp={handleOpenSignUp}
           />
         );
       case 'home':
       default:
         return (
           <HomePage
+            mentors={mentors}
+            loadingMentors={loadingMentors}
             onNavigate={handleNavigate}
-            onOpenEnroll={handleOpenSignUp}
-            currentStudent={currentStudent}
-            onGoToDashboard={() => setViewMode('dashboard')}
+            onBookGuide={handleOpenBooking}
           />
         );
     }
@@ -265,6 +248,13 @@ export default function App() {
       <Footer
         onOpenEnroll={() => (currentStudent ? setViewMode('dashboard') : handleOpenSignUp(null))}
         onNavigate={handleNavigate}
+      />
+
+      {/* Traveler Booking Modal */}
+      <BookingModal
+        isOpen={bookingModalOpen}
+        onClose={() => setBookingModalOpen(false)}
+        guide={selectedGuideForBooking}
       />
 
       {/* Auth & Enrollment Modal */}

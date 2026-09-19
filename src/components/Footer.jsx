@@ -21,24 +21,24 @@ export default function Footer({ onOpenEnroll, onNavigate }) {
               onClick={(e) => handleNavClick(e, 'home')}
               className="text-left mb-4 focus:outline-none"
             >
-              <BrandLogo />
+              <BrandLogo badge="Tour Guides" />
             </button>
             <p className="text-secondary text-sm leading-relaxed max-w-sm font-medium">
-              Empowering the next generation of world-class tour guides, storytellers, and travel entrepreneurs across the globe.
+              Connecting travelers directly with vetted local tour guides for authentic private excursions, museum skip-the-line walks, and culinary trails worldwide.
             </p>
           </div>
 
-          {/* Nav Column 1: Academy Pages */}
+          {/* Nav Column 1: Traveler Booking */}
           <div className="lg:col-span-2">
-            <h4 className="text-dark font-bold text-base mb-4">Academy</h4>
+            <h4 className="text-dark font-bold text-base mb-4">Marketplace</h4>
             <ul className="space-y-2.5 text-sm text-secondary font-medium">
               <li>
                 <button
                   type="button"
-                  onClick={(e) => handleNavClick(e, 'curriculum')}
+                  onClick={(e) => handleNavClick(e, 'find-guides')}
                   className="hover:text-dark transition-colors text-left"
                 >
-                  Curriculum
+                  Find Guides
                 </button>
               </li>
               <li>
@@ -47,7 +47,7 @@ export default function Footer({ onOpenEnroll, onNavigate }) {
                   onClick={(e) => handleNavClick(e, 'instructors')}
                   className="hover:text-dark transition-colors text-left"
                 >
-                  Master Mentors
+                  Featured Guides
                 </button>
               </li>
               <li>
@@ -56,7 +56,7 @@ export default function Footer({ onOpenEnroll, onNavigate }) {
                   onClick={(e) => handleNavClick(e, 'how-to-enroll')}
                   className="hover:text-dark transition-colors text-left"
                 >
-                  How to Enroll
+                  How to Book
                 </button>
               </li>
               <li>
@@ -65,56 +65,56 @@ export default function Footer({ onOpenEnroll, onNavigate }) {
                   onClick={(e) => handleNavClick(e, 'testimonials')}
                   className="hover:text-dark transition-colors text-left"
                 >
-                  Success Stories
+                  Traveler Reviews
                 </button>
               </li>
             </ul>
           </div>
 
-          {/* Nav Column 2: Resources & Certification */}
+          {/* Nav Column 2: Guide Path & Trainee */}
           <div className="lg:col-span-2">
-            <h4 className="text-dark font-bold text-base mb-4">Certification</h4>
+            <h4 className="text-dark font-bold text-base mb-4">Tour Guides</h4>
             <ul className="space-y-2.5 text-sm text-secondary font-medium">
               <li>
                 <button
                   type="button"
-                  onClick={(e) => { e.preventDefault(); onOpenEnroll(); }}
-                  className="hover:text-dark transition-colors text-left text-primary font-semibold"
+                  onClick={(e) => handleNavClick(e, 'trainee-portal')}
+                  className="hover:text-dark transition-colors text-left text-primary font-bold"
                 >
-                  Student Portal &amp; Login
+                  Become a Guide (Academy)
                 </button>
               </li>
               <li>
                 <button
                   type="button"
-                  onClick={(e) => handleNavClick(e, 'curriculum')}
+                  onClick={(e) => handleNavClick(e, 'trainee-portal')}
                   className="hover:text-dark transition-colors text-left"
                 >
-                  License Standards
+                  10-Module Training
                 </button>
               </li>
               <li>
                 <button
                   type="button"
-                  onClick={(e) => handleNavClick(e, 'instructors')}
+                  onClick={(e) => handleNavClick(e, 'trainee-portal')}
                   className="hover:text-dark transition-colors text-left"
                 >
-                  VIP Field Drills
+                  Listing Verification ($10)
                 </button>
               </li>
               <li>
                 <button
                   type="button"
-                  onClick={(e) => handleNavClick(e, 'curriculum')}
+                  onClick={(e) => handleNavClick(e, 'trainee-portal')}
                   className="hover:text-dark transition-colors text-left"
                 >
-                  Tour Rates Guide
+                  Certificate of Completion
                 </button>
               </li>
             </ul>
           </div>
 
-          {/* Nav Column 3: Contact & Social */}
+          {/* Nav Column 3: Social & Mobile Apps */}
           <div className="lg:col-span-4">
             <div className="flex items-center gap-3 mb-4">
               <a 
@@ -137,7 +137,7 @@ export default function Footer({ onOpenEnroll, onNavigate }) {
               </a>
             </div>
 
-            <h4 className="text-secondary text-sm font-semibold mb-3">Download Field Guide Mobile App</h4>
+            <h4 className="text-secondary text-sm font-semibold mb-3">Download Booking Mobile App</h4>
             <div className="flex items-center gap-3">
               <a href="#!" className="hover:opacity-90 transition-opacity">
                 <img src="/assets/img/play-store.png" alt="Get on Google Play" className="h-9" />
@@ -152,8 +152,8 @@ export default function Footer({ onOpenEnroll, onNavigate }) {
 
         {/* Copyright */}
         <div className="pt-8 text-center text-xs text-secondary font-medium flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>All rights reserved &copy; {new Date().getFullYear()} Learn Tour Guide Academy &middot; Connected with Central Supabase Tour Network</span>
-          <span className="text-gray-400">Ready for Vercel &amp; GitHub Deployment</span>
+          <span>All rights reserved &copy; {new Date().getFullYear()} Booking &middot; Certified Tour Guides &amp; Bespoke Excursions Marketplace</span>
+          <span className="text-gray-400">Connected with Central Supabase Cloud Network</span>
         </div>
       </div>
     </footer>
